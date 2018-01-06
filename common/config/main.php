@@ -17,9 +17,9 @@ return [
 //         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yiiboot3',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=yii2',
             'username' => 'root',
-            'password' => '123',
+            'password' => 'root',
             'charset' => 'utf8',
         ],
         'mailer' => [
