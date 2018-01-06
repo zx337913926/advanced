@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = '登陆后台管理';
+$this->title = '后台管理 | 天创环科';
 
 $system_menus = Yii::$app->user->identity->getSystemMenus();
 $system_rights = Yii::$app->user->identity->getSystemRights();
