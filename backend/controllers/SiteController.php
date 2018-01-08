@@ -35,12 +35,12 @@ class SiteController extends BaseController
 //             $this->layout = "lte_main";
             $menus = Yii::$app->user->identity->getSystemMenus();
             $sysInfo = [
-                ['name'=> '操作系统', 'value'=>php_uname('s')],  //'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
+                ['name'=> '操作系统', 'value'=>php_uname('s').'_'.php_uname('r').'_'.php_uname('v')],  //'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
                 ['name'=>'PHP版本', 'value'=>phpversion()],
                 ['name'=>'Yii版本', 'value'=>Yii::getVersion()],
                 ['name'=>'数据库', 'value'=>$this->getDbVersion()],
                 ['name'=>'AdminLTE', 'value'=>'V2.3.6'],
-                ['name'=>'建议和BUG', 'value'=>'http://git.oschina.net/penngo/chadmin/issues'],
+                ['name'=>'建议和BUG', 'value'=>'暂时为空'],
             ];
             return $this->render('index', [
                 'system_menus' => $menus,

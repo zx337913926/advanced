@@ -252,11 +252,10 @@ if($otherMenu == false){
         <li <?=$route == 'site/index' ?  ' class="active" ' : ''?>>
         	<a href="<?=Url::to(['site/index'])?>">
         	<i class="fa fa-dashboard"></i> 
-        	<span>首页</span>
+        	<span>仪表盘</span>
         	</a>
         </li>
-        <?php 
-        
+        <?php
 			foreach($system_menus as $menu){
 			    $funcList = $menu['funcList'];
 			    $isMenuActive = '';

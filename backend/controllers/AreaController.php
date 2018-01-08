@@ -13,9 +13,9 @@ use yii\filters\VerbFilter;
 /**
  * TestController implements the CRUD actions for Test model.
  */
-class TestController extends BaseController
+class AreaController extends BaseController
 {
-	public $layout = "lte_main";
+	public $layout = "lte_area";
 
     /**
      * Lists all Test models.

@@ -4,24 +4,24 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\AdminLog;
+use backend\models\AdminModule;
 use yii\web\NotFoundHttpException;
 
 /**
- * AdminLogController implements the CRUD actions for AdminLog model.
+ * AdminModuleController implements the CRUD actions for AdminModule model.
  */
-class AdminLogController extends BaseController
+class AdminStatisticalController extends BaseController
 {
 	public $layout = "lte_main";
 
     /**
-     * Lists all AdminLog models.
+     * Lists all AdminModule models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $query = AdminLog::find();
-        $querys = Yii::$app->request->get('query');
+        $query = AdminModule::find();
+         $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
             $parame = array();
@@ -41,7 +41,7 @@ class AdminLogController extends BaseController
                 $query = $query->where($condition, $parame);
             }
         }
-
+        //$models = $query->orderBy('display_order')
         $pagination = new Pagination([
             'totalCount' =>$query->count(), 
             'pageSize' => '10', 
@@ -49,11 +49,8 @@ class AdminLogController extends BaseController
             'pageSizeParam'=>'per-page']
         );
         
-        $orderby = Yii::$app->request->get('orderby', '');
-        if(empty($orderby) == false){
-            $query = $query->orderBy($orderby);
-        }
-        
+        $orderby = ['display_order'=>SORT_ASC];
+        $query = $query->orderBy($orderby);
         
         $models = $query
         ->offset($pagination->offset)
@@ -67,8 +64,8 @@ class AdminLogController extends BaseController
     }
 
     /**
-     * Displays a single AdminLog model.
-     * @param string $id
+     * Displays a single AdminModule model.
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
@@ -80,19 +77,22 @@ class AdminLogController extends BaseController
     }
 
     /**
-     * Creates a new AdminLog model.
+     * Creates a new AdminModule model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AdminLog();
+        $model = new AdminModule();
         if ($model->load(Yii::$app->request->post())) {
         
+              if(empty($model->has_lef) == true){
+                  $model->has_lef = 'n';
+              }
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
-        
-            if($model->validate() == true && $model->save()){
+              $model->update_user = Yii::$app->user->identity->uname;
+              $model->update_date = date('Y-m-d H:i:s');            if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -107,9 +107,9 @@ class AdminLogController extends BaseController
     }
 
     /**
-     * Updates an existing AdminLog model.
+     * Updates an existing AdminModule model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate()
@@ -118,7 +118,9 @@ class AdminLogController extends BaseController
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         
-        
+              $model->has_lef = 'n';
+              $model->update_user = Yii::$app->user->identity->uname;
+              $model->update_date = date('Y-m-d H:i:s');        
         
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
@@ -136,15 +138,15 @@ class AdminLogController extends BaseController
     }
 
     /**
-     * Deletes an existing AdminLog model.
+     * Deletes an existing AdminModule model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = AdminLog::deleteAll(['in', 'id', $ids]);
+            $c = AdminModule::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
@@ -155,15 +157,15 @@ class AdminLogController extends BaseController
     }
 
     /**
-     * Finds the AdminLog model based on its primary key value.
+     * Finds the AdminModule model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return AdminLog the loaded model
+     * @param integer $id
+     * @return AdminModule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AdminLog::findOne($id)) !== null) {
+        if (($model = AdminModule::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
