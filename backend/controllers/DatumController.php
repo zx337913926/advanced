@@ -4,16 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\Area;
+use backend\models\Datum;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use common\helpers\Helper;
 /**
  * TestController implements the CRUD actions for Test model.
  */
-class AreaController extends BaseController
+class DatumController extends BaseController
 {
 	public $layout = "lte_main";
 
@@ -23,7 +23,7 @@ class AreaController extends BaseController
      */
     public function actionIndex()
     {
-        $query = Area::find();
+         $query = Datum::find()->where(['admin_id' =>Yii::$app->user->identity->id]);
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -88,26 +88,28 @@ class AreaController extends BaseController
      */
     public function actionCreate()
     {
-        $model = new Test();
+        $model = new Datum();
         if ($model->load(Yii::$app->request->post())) {
-        
+
               if(empty($model->create_user) == true){
                   $model->create_user = 'admin';
               }
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
-        
+              $model->client_ip = Helper::getIpAddress();
+              $model->admin_id = Yii::$app->user->identity->id;
+
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
-                echo json_encode($msg);
+                echo json_encode($msg);exit;
             }
             else{
                 $msg = array('errno'=>2, 'data'=>$model->getErrors());
-                echo json_encode($msg);
+                echo json_encode($msg);exit;
             }
         } else {
-            $msg = array('errno'=>2, 'msg'=>'数据出错');
-            echo json_encode($msg);
+            $msg = array('errno'=>2, 'msg'=>Yii::$app->request->post());
+            echo json_encode($msg);exit;
         }
     }
 
@@ -125,8 +127,11 @@ class AreaController extends BaseController
         
              if(empty($model->create_user) == true){
                  $model->create_user = 'admin';
-             }        
-        
+             }
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
+            $model->client_ip = Helper::getIpAddress();
+
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -170,7 +175,7 @@ class AreaController extends BaseController
      */
     protected function findModel($id)
     {
-        if (($model = Test::findOne($id)) !== null) {
+        if (($model = Datum::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

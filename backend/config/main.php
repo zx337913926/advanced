@@ -20,7 +20,14 @@ $config = [
 //             'enablePrettyUrl' => true,
 //             'showScriptName' => false,
 //         ],
-        
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=yii_2',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+            'tablePrefix' =>'admin_',
+        ],
         'user'=>[
             'class'=>'yii\web\User',
             'identityClass' => 'backend\models\AdminUser',
