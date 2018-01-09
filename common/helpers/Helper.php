@@ -272,4 +272,14 @@ class Helper
         \Yii::$app->end();
         return;
     }
+
+    /*
+     * 后台权限控制手动输入
+     * */
+    public function admin_info(){
+        //返回定义的管理员ID 用于定义显示路由界面，开发人员可用
+        return [
+            '156',
+        ];
+    }
 }

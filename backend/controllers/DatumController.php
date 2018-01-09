@@ -23,6 +23,7 @@ class DatumController extends BaseController
      */
     public function actionIndex()
     {
+
          $query = Datum::find()->where(['admin_id' =>Yii::$app->user->identity->id]);
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
@@ -156,7 +157,7 @@ class DatumController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = Test::deleteAll(['in', 'id', $ids]);
+            $c = Datum::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
